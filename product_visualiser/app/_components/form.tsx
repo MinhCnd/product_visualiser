@@ -6,7 +6,7 @@ interface FormProps {
   onChange: (newValue: string) => void;
 }
 
-export default function TextBox({ label, value, onChange }: FormProps) {
+export default function Form({ label, value, onChange }: FormProps) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     onChange(newValue);

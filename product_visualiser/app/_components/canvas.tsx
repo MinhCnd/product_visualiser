@@ -7,7 +7,7 @@ interface CanvasProps {
   text: string;
 }
 
-export default function Canvas({ width, height, imageSrc, text }: CanvasProps): JSX.Element {
+export default function Canvas({ width, height, imageSrc, text }: CanvasProps): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
