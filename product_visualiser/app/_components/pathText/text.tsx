@@ -6,8 +6,6 @@ interface TextProps {
   font: string
   color: RGBColor
   path: string
-  x: number
-  y: number
 }
 
 export default function Text(props: TextProps) {
@@ -19,7 +17,7 @@ export default function Text(props: TextProps) {
 
   return (
       <text>
-        <textPath href={props.path} x={props.x} y={props.y} style={textStyle}>{props.text}</textPath>
+        <textPath href={props.path} style={textStyle}>{props.text}</textPath>
       </text>
   );
 };

@@ -1,0 +1,21 @@
+.pathKnob {
+  stroke: blue;
+  fill: white;
+}
+.path {
+  stroke: blue;
+}
+
+.pathTextEditor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.pathText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}

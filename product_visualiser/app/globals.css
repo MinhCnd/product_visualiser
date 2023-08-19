@@ -42,13 +42,6 @@
   z-index: -1;
 }
 
-.view-container .text-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-}
-
 svg text {
   font: italic 30px serif;
 }
@@ -106,6 +99,15 @@ svg text {
 .color-picker-container{
   background-color: bl;
   z-index: 10;
+}
+
+.editButton {
+  color: black;
+  border: 1px solid black;
+  margin-top: 40px;
+  margin-inline-start: 40px;
+  border-radius: 5px;
+  width: 150px;
 }
 
 
