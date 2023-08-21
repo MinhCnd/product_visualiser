@@ -38,7 +38,6 @@ export default function PathEditor(props: pathEditorProps) {
       if (boundingRect) {
         const x = event.clientX - boundingRect.left;
         const y = event.clientY - boundingRect.top;
-
         if (draggingKnob === 'start') {
           props.onPathStartChange({x: x,y: y})
         } else if (draggingKnob === 'end') {

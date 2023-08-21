@@ -27,7 +27,6 @@
 .main-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
 }
 
 .view-container {
@@ -54,62 +53,12 @@ svg text {
   flex-direction: column;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
+.form-control {
+  color: black;
+  width: 200px;
+  height: 70px;
   margin-inline-start: 40px;
-  margin-top: 40px;
 }
-
-.form-container .label{
-  color: black;
-}
-
-.form-container .input {
-  color: black;
-  border: 1px solid black;
-  padding-inline-start: 10px;
-  margin-top: 2px;
-  width: 70%;
-  height: 30px;
-  border-radius: 5px;
-}
-
-.select-container {
-  display: flex;
-  flex-direction: column;
-  margin-inline-start: 40px;
-  margin-top: 40px;
-}
-
-.select-container label{
-  color: black;
-}
-
-.select-container select {
-  color: black;
-  border: 1px solid black;
-  padding-inline-start: 10px;
-  margin-top: 2px;
-  width: 70%;
-  height: 30px;
-  border-radius: 5px;
-}
-
-.color-picker-container{
-  background-color: bl;
-  z-index: 10;
-}
-
-.editButton {
-  color: black;
-  border: 1px solid black;
-  margin-top: 40px;
-  margin-inline-start: 40px;
-  border-radius: 5px;
-  width: 150px;
-}
-
 
 body {
   color: rgb(var(--foreground-rgb));

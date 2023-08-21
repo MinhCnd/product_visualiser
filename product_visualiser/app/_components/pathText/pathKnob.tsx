@@ -12,14 +12,23 @@ interface PathKnobProps {
 
 export default function PathKnob(props: PathKnobProps) {
   return (
-    <circle
-      className={styles.pathKnob}
-      cx={props.point.x}
-      cy={props.point.y}
-      r={props.radius}
-      onMouseDown={props.onMouseDown}
+    <g onMouseDown={props.onMouseDown}
       onMouseUp={props.onMouseUp}
-      onMouseMove={props.onMouseMove}
-  />
+      onMouseMove={props.onMouseMove}>
+      {/*Smaller visible knob*/}
+      <circle
+        className={styles.pathKnob}
+        cx={props.point.x}
+        cy={props.point.y}
+        r={props.radius}
+      />
+      {/*Larger invisible circle to provide touch area*/}
+      <circle
+        className={styles.pathKnobTouchArea}
+        cx={props.point.x}
+        cy={props.point.y}
+        r={props.radius*4}
+      />
+    </g>
   )
 }

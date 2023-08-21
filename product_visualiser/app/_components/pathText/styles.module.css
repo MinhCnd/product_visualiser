@@ -2,6 +2,12 @@
   stroke: blue;
   fill: white;
 }
+
+.pathKnobTouchArea {
+  stroke: transparent;
+  fill: transparent;
+}
+
 .path {
   stroke: blue;
 }

@@ -9,10 +9,13 @@ interface pathTextProps {
   width: number,
   height: number
   text: string,
+  textAnchor: string,
+  textSizePx: number,
   font: string,
   color: RGBColor,
   pathStart: Point,
-  pathEnd: Point
+  pathEnd: Point,
+  pathLength: number
 }
 export default function PathText(props: pathTextProps) {
 
@@ -22,7 +25,13 @@ export default function PathText(props: pathTextProps) {
     <div className={styles.pathText}>
     <svg width={props.width} height={props.height}>
       <path id="TextPath"  d={pathString}/>
-        <Text text={props.text} font={props.font} color={props.color} path='#TextPath'/>
+        <Text text={props.text}
+        anchor={props.textAnchor}
+        font={props.font}
+        size={props.textSizePx}
+        color={props.color}
+        path='#TextPath'
+        pathLength={props.pathLength}/>
     </svg>
   </div>
   )

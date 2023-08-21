@@ -7,14 +7,14 @@ import React from 'react';
 import styles from './styles/colorPicker.module.css';
 
 interface ColorPickerProps {
-  label: string
+  label: string,
+  color: RGBColor,
   onChange: (color: RGBColor) => void;
 }
 
 export default function ColorPicker(props: ColorPickerProps) {
 
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [color, setColor] = useState({ r: 241, g: 112, b: 19, a: 1});
 
   function handleClick() {
     setDisplayColorPicker(!displayColorPicker);
@@ -26,7 +26,6 @@ export default function ColorPicker(props: ColorPickerProps) {
 
   function handleChange(color: ColorResult) {
     props.onChange(color.rgb);
-    setColor({a: color.rgb.a ? color.rgb.a : 1, r: color.rgb.r, g: color.rgb.g, b: color.rgb.b});
   }
 
   const _styles = reactCSS({
@@ -35,7 +34,7 @@ export default function ColorPicker(props: ColorPickerProps) {
         width: '36px',
         height: '14px',
         borderRadius: '2px',
-        background: `rgba(${ color.r }, ${ color.g }, ${ color.b }, ${ color.a })`,
+        background: `rgba(${ props.color.r }, ${ props.color.g }, ${ props.color.b }, ${ props.color.a })`,
       } as React.CSSProperties,
       swatch: {
         padding: '5px',
@@ -67,7 +66,7 @@ export default function ColorPicker(props: ColorPickerProps) {
       </div>
       { displayColorPicker ? <div style={ _styles.popover }>
         <div style={ _styles.cover } onClick={ handleClose }/>
-        <SketchPicker color={ color } onChange={ handleChange } />
+        <SketchPicker color={ props.color } onChange={ handleChange } />
       </div> : null }
     </div>
   )
