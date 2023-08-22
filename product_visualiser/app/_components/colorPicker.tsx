@@ -5,6 +5,7 @@ import { RGBColor, SketchPicker, ColorResult } from 'react-color'
 import { useState } from 'react';
 import React from 'react';
 import styles from './styles/colorPicker.module.css';
+import { Button } from '@mui/material';
 
 interface ColorPickerProps {
   label: string,
@@ -31,8 +32,8 @@ export default function ColorPicker(props: ColorPickerProps) {
   const _styles = reactCSS({
     'default': {
       color: {
-        width: '36px',
-        height: '14px',
+        width: '30px',
+        height: '30px',
         borderRadius: '2px',
         background: `rgba(${ props.color.r }, ${ props.color.g }, ${ props.color.b }, ${ props.color.a })`,
       } as React.CSSProperties,
@@ -60,7 +61,6 @@ export default function ColorPicker(props: ColorPickerProps) {
 
   return (
     <div className={styles.colorPicker}>
-      <label >{props.label}</label>
       <div style={ _styles.swatch } onClick={ handleClick }>
         <div style={ _styles.color } />
       </div>

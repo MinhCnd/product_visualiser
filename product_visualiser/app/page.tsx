@@ -69,17 +69,19 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Head>
-        <title>My page title</title>
-      </Head>
+    <main className="top-container">
+      <div className='header-container'>
+        <header style={{padding: '10px'}}>
+          <h1>Customize</h1>
+        </header>
+      </div>
       <div className='main-container'>
         <div className='view-container'>
           <div className='canvas-container'>
-          <Canvas width={400} height={400} imageSrc='/journal.jpeg' text=''/>
+          <Canvas width={500} height={500} imageSrc='/waterBottle.jpeg' text=''/>
           </div>
-          <PathText width={400}
-            height={400}
+          <PathText width={500}
+            height={500}
             text={text}
             textSizePx={textSizePx}
             textAnchor={textAlignment}
@@ -88,7 +90,7 @@ export default function Home() {
             pathEnd={pathEnd}
             pathLength={getPathLength(pathEnd, pathStart)}
             />
-          <PathEditor width={400} height={400} pathStart={pathStart} pathEnd={pathEnd} onPathStartChange={setPathStart} onPathEndChange={setPathEnd} editMode={editPath}></PathEditor>
+          <PathEditor width={500} height={500} pathStart={pathStart} pathEnd={pathEnd} onPathStartChange={setPathStart} onPathEndChange={setPathEnd} editMode={editPath}></PathEditor>
         </div>
         <div className="editor-container">
           <FormControl className='form-control'>
@@ -99,11 +101,16 @@ export default function Home() {
               onChange={handleTextChange}
             />
           </FormControl>
-          <FormControl className='form-control'>
-            {
-              TextAlignmentEdit(textAlignment, handleAlignmentChange)
-            }
-          </FormControl>
+
+          <div className="alignment-color-container">
+            <FormControl className='alignment-form-control'>
+              {
+                TextAlignmentEdit(textAlignment, handleAlignmentChange)
+              }
+            </FormControl>
+            <ColorPicker label="Color" color={color} onChange={handleColorChange}/>
+          </div>
+
           <FormControl className='form-control'>
             <InputLabel id="text-size-select-label">Size</InputLabel>
             <Select
@@ -133,7 +140,6 @@ export default function Home() {
           <FormControl className='form-control'>
             <Button variant="outlined" onClick={handleEditPathChange}>{editPath ? "Stop Edit Path" : "Edit Path"}</Button>
           </FormControl>
-          <ColorPicker label="Color" color={color} onChange={handleColorChange}/>
 
         </div>
       </div>
