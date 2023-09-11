@@ -1,16 +1,12 @@
 'use client'
 import React, { useState } from 'react';
 import Canvas from './_components/canvas';
-import PathText from './_components/pathText/pathText';
-import Head from 'next/head';
-import ColorPicker from './_components/colorPicker';
+import PathText from './_components/textConfig/pathText/pathText';
 import { RGBColor } from 'react-color';
-import PathEditor from './_components/pathText/pathTextEditor';
+import PathEditor from './_components/textConfig/pathText/pathTextEditor';
 import { Point } from 'svg-path-properties/dist/types/types';
-import TextAlignmentEdit from './_components/textAlignment';
-import { Select, MenuItem, SelectChangeEvent, FormControl} from '@mui/material';
-import {TextField, Button, InputLabel} from '@mui/material';
-const FONTS = ['Times New Roman','Georgia','Garamond','Arial','Verdana','Helvetica','Courier New','Lucida Console','Monaco','Brush Script Mj','Lucida Handwriting','Copperplate','Papyrus','Tangerine']
+import {SelectChangeEvent} from '@mui/material';
+import TextConfig from './_components/textConfig/textConfig';
 
 export default function Home() {
 
@@ -45,23 +41,6 @@ export default function Home() {
     setEditPath(!editPath);
   }
 
-  type Item = {
-    value: number;
-    label: string;
-  };
-
-  const generateTextSizeItems = (items: Item[]) => {
-    return items.map((item, index) => (
-        <MenuItem key={index} value={item.value}>{item.label}</MenuItem>
-    ));
-  };
-
-  const generateFontItems = (fonts: string[]) => {
-    return fonts.map((item, index) => (
-      <MenuItem key={index} value={item}>{item}</MenuItem>
-    ));
-  };
-
   const getPathLength = (startPoint: Point, endPoint: Point) => {
     const dy = Math.abs(endPoint.y - startPoint.y);
     const dx = Math.abs(endPoint.x - startPoint.x);
@@ -93,54 +72,9 @@ export default function Home() {
           <PathEditor width={500} height={500} pathStart={pathStart} pathEnd={pathEnd} onPathStartChange={setPathStart} onPathEndChange={setPathEnd} editMode={editPath}></PathEditor>
         </div>
         <div className="editor-container">
-          <FormControl className='form-control'>
-            <TextField
-              id="outlined-text"
-              label="Text"
-              defaultValue={text}
-              onChange={handleTextChange}
-            />
-          </FormControl>
-
-          <div className="alignment-color-container">
-            <FormControl className='alignment-form-control'>
-              {
-                TextAlignmentEdit(textAlignment, handleAlignmentChange)
-              }
-            </FormControl>
-            <ColorPicker label="Color" color={color} onChange={handleColorChange}/>
-          </div>
-
-          <FormControl className='form-control'>
-            <InputLabel id="text-size-select-label">Size</InputLabel>
-            <Select
-              labelId="text-size-select"
-              label="Size"
-              id="text-size-select"
-              value={textSizePx}
-              onChange={handleTextSizeChange} >
-              {
-                generateTextSizeItems([{value: 20,label:"Small"},
-                                    {value: 30,label:"Medium"},
-                                    {value: 40,label:"Large"},])
-              }
-            </Select>
-          </FormControl>
-          <FormControl className='form-control'>
-            <InputLabel id="font-select-label">Font</InputLabel>
-            <Select
-              labelId="font-select"
-              id="text-select"
-              value={font}
-              label="Font"
-              onChange={handleFontChange}>
-              { generateFontItems(FONTS) }
-            </Select>
-          </FormControl>
-          <FormControl className='form-control'>
-            <Button variant="outlined" onClick={handleEditPathChange}>{editPath ? "Stop Edit Path" : "Edit Path"}</Button>
-          </FormControl>
-
+          <TextConfig text={text} textAlignment={textAlignment} textSizePx={textSizePx} font={font} color={color} editPath={editPath}
+          handleTextChange={handleTextChange} handleAlignmentChange={handleAlignmentChange} handleColorChange={handleColorChange}
+          handleEditPathChange={handleEditPathChange} handleFontChange={handleFontChange} handleTextSizeChange={handleTextSizeChange}/>
         </div>
       </div>
     </main>

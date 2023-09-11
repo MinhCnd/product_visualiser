@@ -65,26 +65,6 @@ svg text {
   align-items: center;
 }
 
-.form-control {
-  min-width: 300px;
-  height: 70px;
-  margin-top: 20px;
-  margin-inline-start: 40px;
-  margin-inline-end: 40px;
-}
-
-.alignment-form-control{
-  height: 70px;
-  margin-inline-end: 40px;
-}
-
-.alignment-color-container{
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

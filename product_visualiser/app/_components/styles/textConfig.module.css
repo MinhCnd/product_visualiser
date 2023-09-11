@@ -1,0 +1,27 @@
+.textConfigContainer{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.formControl {
+  min-width: 300px;
+  height: 70px;
+  margin-top: 20px;
+  margin-inline-start: 40px;
+  margin-inline-end: 40px;
+}
+
+.alignmentFormControl{
+  height: 70px;
+  margin-inline-end: 40px;
+}
+
+.alignmentColorContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
