@@ -8,13 +8,16 @@ import styles from '../styles/textConfig.module.css';
 
 const FONTS = ['Times New Roman','Georgia','Garamond','Arial','Verdana','Helvetica','Courier New','Lucida Console','Monaco','Brush Script Mj','Lucida Handwriting','Copperplate','Papyrus','Tangerine']
 
-export interface textConfigProps {
+export interface textConfig {
   text: string,
-  textAlignment: string,
-  textSizePx: number,
+  alignment: string,
+  size: number,
   font: string,
   color: RGBColor,
-  editPath: boolean,
+  editPath: boolean
+}
+
+export interface TextConfigProps extends textConfig{
   handleTextChange: any,
   handleAlignmentChange: any,
   handleColorChange: any,
@@ -23,7 +26,7 @@ export interface textConfigProps {
   handleEditPathChange: any
 }
 
-export default function TextConfig(props: textConfigProps) {
+export default function TextConfig(props: TextConfigProps) {
 
   type Item = {
     value: number;
@@ -56,7 +59,7 @@ export default function TextConfig(props: textConfigProps) {
           <div className={styles.alignmentColorContainer}>
             <FormControl className={styles.alignmentFormControl}>
               {
-                TextAlignmentEdit(props.textAlignment, props.handleAlignmentChange)
+                TextAlignmentEdit(props.alignment, props.handleAlignmentChange)
               }
             </FormControl>
             <ColorPicker label="Color" color={props.color} onChange={props.handleColorChange}/>
@@ -68,7 +71,7 @@ export default function TextConfig(props: textConfigProps) {
               labelId="text-size-select"
               label="Size"
               id="text-size-select"
-              value={props.textSizePx}
+              value={props.size}
               onChange={props.handleTextSizeChange} >
               {
                 generateTextSizeItems([{value: 20,label:"Small"},
