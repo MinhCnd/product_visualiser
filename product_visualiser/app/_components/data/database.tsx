@@ -1,9 +1,8 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue, DataSnapshot, DatabaseReference, Database, Unsubscribe, get  } from "firebase/database";
 import { textConfig } from "./textConfig";
 import { RGBColor } from "react-color";
-require('dotenv').config()
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
