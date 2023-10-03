@@ -8,6 +8,8 @@ import { Point } from 'svg-path-properties/dist/types/types';
 import {SelectChangeEvent} from '@mui/material';
 import TextConfig, { textConfig } from './_components/data/textConfig';
 import firebaseService from './_components/data/database';
+import ResizableRect from "./_components/rect/ResizableRect";
+import useResizableRect from "./hook/useResizableRect";
 
 export default function Home() {
 
@@ -15,8 +17,23 @@ export default function Home() {
   const [pathEnd, setPathEnd] = useState<Point>({x:310, y:170});
 
   const [textConfig, setTextConfig] = useState<textConfig>({text:'', alignment:'left', size:30, font:'Times New Roman', color:{a:1,r:0,g:0,b:0}, editPath: false});
-
+  const [fontSizeValue, setFontSizeValue] = useState<string>('0')
   const TEXT_CONFIG_ID = '01';
+  const [imageSrc, setImageSrc] = useState<string>("");
+  const useTextResizable = useResizableRect({
+    dfwidth: 300,
+    dfheight: 100,
+    dftop: 0,
+    dfleft: 0,
+    dfrotateAngle: 0,
+  });
+  const useImg1Resizable = useResizableRect({
+    dfwidth: 150,
+    dfheight: 150,
+    dftop: 10,
+    dfleft: 10,
+    dfrotateAngle: 0,
+  });
 
 
   useEffect(() => {
@@ -70,6 +87,12 @@ export default function Home() {
     return Math.sqrt(Math.pow(dy,2)+Math.pow(dx,2));
   }
 
+  const getDisplayTextFontSize = (ele: HTMLElement) => {
+    if (ele && ele.className === 'text') {
+      ele.style?.fontSize && setFontSizeValue(ele.style?.fontSize);
+    }
+  }
+
   return (
     <main className="top-container">
       <div className='header-container'>
@@ -82,17 +105,52 @@ export default function Home() {
           <div className='canvas-container'>
           <Canvas width={500} height={500} imageSrc='/waterBottle.jpeg' text=''/>
           </div>
-          <PathText width={500}
-            height={500}
-            text={textConfig.text}
-            textSizePx={textConfig.size}
-            textAnchor={textConfig.alignment}
-            font={textConfig.font} color={textConfig.color}
-            pathStart={pathStart}
-            pathEnd={pathEnd}
-            pathLength={getPathLength(pathEnd, pathStart)}
+          {imageSrc && (
+            <ResizableRect
+              parentRotateAngle={0}
+              rotatable={true}
+              aspectRatio={0}
+              {...{
+                top: useImg1Resizable.top,
+                left: useImg1Resizable.left,
+                width: useImg1Resizable.width,
+                height: useImg1Resizable.height,
+                rotateAngle: useImg1Resizable.rotateAngle,
+                editing: textConfig.editPath,
+                minWidth: -Infinity,
+                minHeight: -Infinity,
+                zoomable: "nw,ne,sw,se",
+                onRotate: useImg1Resizable.handleRotate,
+                onResize: useImg1Resizable.handleResize,
+                onDrag: useImg1Resizable.handleDrag,
+                imageSrc: imageSrc,
+              }}
             />
-          <PathEditor width={500} height={500} pathStart={pathStart} pathEnd={pathEnd} onPathStartChange={setPathStart} onPathEndChange={setPathEnd} editMode={textConfig.editPath}></PathEditor>
+          )}
+          <ResizableRect
+            parentRotateAngle={0}
+            rotatable={true}
+            aspectRatio={0}
+            {...{
+              top: useTextResizable.top,
+              left: useTextResizable.left,
+              width: useTextResizable.width,
+              height: useTextResizable.height,
+              rotateAngle: useTextResizable.rotateAngle,
+              editing: textConfig.editPath,
+              minWidth: -Infinity,
+              minHeight: -Infinity,
+              zoomable: "nw,ne,sw,se",
+              text: textConfig.text,
+              textColor: textConfig.color,
+              textAlign: textConfig.alignment,
+              font: textConfig.font,
+              onRotate: useTextResizable.handleRotate,
+              onResize: useTextResizable.handleResize,
+              onDrag: useTextResizable.handleDrag,
+              displayFontSize: getDisplayTextFontSize
+            }}
+          />
         </div>
         <div className="editor-container">
           <TextConfig text={textConfig.text} alignment={textConfig.alignment} size={textConfig.size} font={textConfig.font} color={textConfig.color} editPath={textConfig.editPath}
