@@ -1,49 +1,62 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import Canvas from './_components/canvas';
-import PathText from './_components/textConfig/pathText/pathText';
 import { RGBColor } from 'react-color';
-import PathEditor from './_components/textConfig/pathText/pathTextEditor';
 import { Point } from 'svg-path-properties/dist/types/types';
 import {SelectChangeEvent} from '@mui/material';
-import TextConfig, { textConfig } from './_components/data/textConfig';
+import ConfigEditor, { Config } from './_components/data/Config';
 import firebaseService from './_components/data/database';
 import ResizableRect from "./_components/rect/ResizableRect";
-import useResizableRect from "./hook/useResizableRect";
+import getResizableRectProps from "./hook/getResizableRectProps";
 
 export default function Home() {
 
   const [pathStart, setPathStart] = useState<Point>({x: 120, y: 250});
   const [pathEnd, setPathEnd] = useState<Point>({x:310, y:170});
 
-  const [textConfig, setTextConfig] = useState<textConfig>({text:'', alignment:'left', size:30, font:'Times New Roman', color:{a:1,r:0,g:0,b:0}, editPath: false});
   const [fontSizeValue, setFontSizeValue] = useState<string>('0')
   const TEXT_CONFIG_ID = '01';
   const [imageSrc, setImageSrc] = useState<string>("");
-  const useTextResizable = useResizableRect({
-    dfwidth: 300,
-    dfheight: 100,
-    dftop: 0,
-    dfleft: 0,
-    dfrotateAngle: 0,
-  });
-  const useImg1Resizable = useResizableRect({
-    dfwidth: 150,
-    dfheight: 150,
-    dftop: 10,
-    dfleft: 10,
-    dfrotateAngle: 0,
-  });
 
+  const [textConfig, setTextConfig] = useState<Config>({  width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
+    rotateAngleRad: 0,
+    text: '',
+    imageSrc: '',
+    alignment: '',
+    size: 0,
+    font: 'Times New Roman',
+    color: {a:1,r:0,g:0,b:0},
+    editPath: false});
+
+  const [imageConfig, setImageConfig] = useState<Config>({  width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
+    rotateAngleRad: 0,
+    text: '',
+    imageSrc: '',
+    alignment: '',
+    size: 0,
+    font: 'Times New Roman',
+    color: {a:1,r:0,g:0,b:0},
+    editPath: false});
 
   useEffect(() => {
     //Update with initial value & also listen for further changes
-    firebaseService.subscribe(`textConfig/${TEXT_CONFIG_ID}`,setTextConfig);
+    firebaseService.subscribe(`config/01`, setTextConfig);
+    firebaseService.subscribe(`config/02`, setImageConfig);
     return () => {
       //Cleanup function to be run when component removed from DOM
-      firebaseService.unsubscribe(`textConfig/${TEXT_CONFIG_ID}`);
+      firebaseService.unsubscribe(`config/01`);
+      firebaseService.unsubscribe(`config/02`);
     }
   },[]);
+
+  const textRectProps = getResizableRectProps({config: textConfig, configId: `01`, firebaseService});
+  const imageRectProps = getResizableRectProps({config: imageConfig, configId: `02`, firebaseService});
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const tempConfig = textConfig;
@@ -111,18 +124,19 @@ export default function Home() {
               rotatable={true}
               aspectRatio={0}
               {...{
-                top: useImg1Resizable.top,
-                left: useImg1Resizable.left,
-                width: useImg1Resizable.width,
-                height: useImg1Resizable.height,
-                rotateAngle: useImg1Resizable.rotateAngle,
+                top: imageRectProps.config.top,
+                left: imageRectProps.config.left,
+                width: imageRectProps.config.width,
+                height: imageRectProps.config.height,
+                rotateAngle: imageRectProps.config.rotateAngleRad,
                 editing: textConfig.editPath,
                 minWidth: -Infinity,
                 minHeight: -Infinity,
                 zoomable: "nw,ne,sw,se",
-                onRotate: useImg1Resizable.handleRotate,
-                onResize: useImg1Resizable.handleResize,
-                onDrag: useImg1Resizable.handleDrag,
+                onRotate: imageRectProps.handleRotate,
+                onResize: imageRectProps.handleResize,
+                onDragStart: imageRectProps.onDragStart,
+                onDrag: imageRectProps.handleDrag,
                 imageSrc: imageSrc,
               }}
             />
@@ -132,11 +146,11 @@ export default function Home() {
             rotatable={true}
             aspectRatio={0}
             {...{
-              top: useTextResizable.top,
-              left: useTextResizable.left,
-              width: useTextResizable.width,
-              height: useTextResizable.height,
-              rotateAngle: useTextResizable.rotateAngle,
+              top: textRectProps.config.top,
+              left: textRectProps.config.left,
+              width: textRectProps.config.width,
+              height: textRectProps.config.height,
+              rotateAngle: textRectProps.config.rotateAngleRad,
               editing: textConfig.editPath,
               minWidth: -Infinity,
               minHeight: -Infinity,
@@ -145,17 +159,28 @@ export default function Home() {
               textColor: textConfig.color,
               textAlign: textConfig.alignment,
               font: textConfig.font,
-              onRotate: useTextResizable.handleRotate,
-              onResize: useTextResizable.handleResize,
-              onDrag: useTextResizable.handleDrag,
+              onRotate: textRectProps.handleRotate,
+              onResize: textRectProps.handleResize,
+              onDragStart: textRectProps.onDragStart,
+              onDrag: textRectProps.handleDrag,
               displayFontSize: getDisplayTextFontSize
             }}
           />
         </div>
         <div className="editor-container">
-          <TextConfig text={textConfig.text} alignment={textConfig.alignment} size={textConfig.size} font={textConfig.font} color={textConfig.color} editPath={textConfig.editPath}
+          <ConfigEditor text={textConfig.text} alignment={textConfig.alignment} size={textConfig.size} font={textConfig.font} color={textConfig.color} editPath={textConfig.editPath}
+            width={textRectProps.config.width}
+            height={textRectProps.config.width}
+            top={textRectProps.config.top}
+            left={textRectProps.config.left}
+            rotateAngleRad={textRectProps.config.rotateAngleRad}
+            imageSrc={``}
+            handleImageSourceChange={()=>{}}
+            handleDrag={()=>{}}
+            handleResize={()=>{}}
+            handleRotate={()=>{}}
           handleTextChange={handleTextChange} handleAlignmentChange={handleAlignmentChange} handleColorChange={handleColorChange}
-          handleEditPathChange={handleEditPathChange} handleFontChange={handleFontChange} handleTextSizeChange={handleTextSizeChange}/>
+          handleEditPathChange={handleEditPathChange} handleFontChange={handleFontChange}/>
         </div>
       </div>
     </main>

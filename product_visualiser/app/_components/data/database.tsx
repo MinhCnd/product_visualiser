@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue, DataSnapshot, DatabaseReference, Database, Unsubscribe, get  } from "firebase/database";
-import { textConfig } from "./textConfig";
+import { Config } from "./Config";
 import { RGBColor } from "react-color";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -33,8 +33,8 @@ class FirebaseService {
     this.unsubscribeList = [];
   }
 
-  private getTextConfigRef(textConfigId: string): DatabaseReference {
-    return ref(this.db, `textConfig/${textConfigId}`);
+  private getConfigRef(textConfigId: string): DatabaseReference {
+    return ref(this.db, `config/${textConfigId}`);
   }
 
   unsubscribe(reference: string) {
@@ -50,42 +50,42 @@ class FirebaseService {
     this.unsubscribeList.push({reference, callback: value});
   }
 
-  updateConfig(textConfigId: string, newConfig: textConfig) {
-    set(this.getTextConfigRef(textConfigId), newConfig);
+  updateConfig(textConfigId: string, newConfig: Config) {
+    set(this.getConfigRef(textConfigId), newConfig);
   }
 
   updateText(textConfigId: string, newValue: string) {
-    set(this.getTextConfigRef(textConfigId), {
+    set(this.getConfigRef(textConfigId), {
       text: newValue
     });
   }
 
   updateTextSize(textConfigId: string, newValue: number) {
-    set(this.getTextConfigRef(textConfigId), {
+    set(this.getConfigRef(textConfigId), {
       size: newValue
     });
   }
 
   updateTextAlignment (textConfigId: string, newValue: string) {
-    set(this.getTextConfigRef(textConfigId), {
+    set(this.getConfigRef(textConfigId), {
       alignment: newValue
     });
   }
 
   updateTextColor (textConfigId: string, newValue: RGBColor) {
-    set(this.getTextConfigRef(textConfigId), {
+    set(this.getConfigRef(textConfigId), {
       color: newValue
     });
   }
 
   updateTextFont (textConfigId: string, newValue: string) {
-    set(this.getTextConfigRef(textConfigId), {
+    set(this.getConfigRef(textConfigId), {
       font: newValue
     });
   }
 
   updateEditPath (textConfigId: string, newValue: boolean) {
-    set(this.getTextConfigRef(textConfigId), {
+    set(this.getConfigRef(textConfigId), {
       editPath: newValue
     });
   }

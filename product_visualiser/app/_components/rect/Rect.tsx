@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import StyledRect from "./StyledRect";
 import { getAngle, getCursor, getLength } from "../utils/ResizeRotate-utils";
 import Image from "next/image";
-import { Color } from "three";
 import { RGBColor } from "react-color";
 interface RectProps {
   styles: {
@@ -132,33 +131,47 @@ const Rect = (props: RectProps) => {
   };
 
   // Drag
-  const startDrag = (e: any) => {
+  const onMouseDown = (e: any) => {
+    
     if (!editing) return;
+    let dragging = false;
     let { clientX: startX, clientY: startY } = e;
+    
     onDragStart && onDragStart();
     let isMouseDown = true;
+    
+    const onMouseMove = (e: any) => {
+      
+      if(!dragging && isMouseDown) {
+        dragging = true
+      }
 
-    const onMoveDrag = (e: any) => {
-      if (!isMouseDown) return; // patch: fix windows press win key during mouseup issue
-      e.stopImmediatePropagation();
-      const { clientX, clientY } = e;
-      const deltaX = clientX - startX;
-      const deltaY = clientY - startY;
-      onDrag(deltaX, deltaY);
-      //startX = clientX;
-      //startY = clientY;
+      if(dragging && !isMouseDown) {
+        dragging = false
+      }
+
+      if(dragging) {
+        const { clientX, clientY } = e;
+        const deltaX = clientX - startX;
+        const deltaY = clientY - startY;
+        onDrag(deltaX, deltaY);
+      }
+
+      e.stopPropagation()
+      e.preventDefault()
+
     };
 
-    const onUpDrag = () => {
-      document.removeEventListener("mousemove", onMoveDrag);
-      document.removeEventListener("mouseup", onUpDrag);
-      if (isMouseDown) return;
+    const onMouseUp = () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
       isMouseDown = false;
+      dragging = false;
       onDragEnd && onDragEnd();
     };
 
-    document.addEventListener("mousemove", onMoveDrag);
-    document.addEventListener("mouseup", onUpDrag);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
   };
 
   // Rotate
@@ -202,26 +215,6 @@ const Rect = (props: RectProps) => {
     document.addEventListener("mousemove", onMoveRotate);
     document.addEventListener("mouseup", onUpRotate);
   };
-
-  // const onMoveRotate = (e: any, center: { x: number, y: number }, startVector: { x: number, y: number }) => {
-  //   // if (!isMouseDown) return; // patch: fix windows press win key during mouseup issue
-  //   e.stopImmediatePropagation();
-  //   const { clientX, clientY } = e;
-  //   const rotateVector = {
-  //     x: clientX - center.x,
-  //     y: clientY - center.y,
-  //   };
-  //   const angle = getAngle(startVector, rotateVector);
-  //   onRotate(angle, rotateAngle);
-  // };
-
-  // const onUpRotate = (center: { x: number, y: number }, startVector: { x: number, y: number }) => {
-  //   document.removeEventListener("mousemove", (e) => onMoveRotate(e, center, startVector));
-  //   document.removeEventListener("mouseup", () => onUpRotate(center, startVector));
-  //   // if (!isMouseDown) return;
-  //   setIsMouseDown(false);
-  //   onRotateEnd && onRotateEnd();
-  // };
 
   // Resize
   const startResize = (e: any, cursor: any) => {
@@ -272,7 +265,7 @@ const Rect = (props: RectProps) => {
   return (
     <StyledRect
       ref={RectRef}
-      onMouseDown={startDrag}
+      onMouseDown={onMouseDown}
       className="rect single-resizer"
       style={style}
     >
