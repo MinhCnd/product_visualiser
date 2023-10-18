@@ -4,12 +4,18 @@ import TextAlignmentEdit from '../textAlignment';
 import { Select, MenuItem, FormControl} from '@mui/material';
 import {TextField, Button, InputLabel} from '@mui/material';
 import { RGBColor } from 'react-color';
-import styles from '../styles/textConfig.module.css';
+import styles from '../styles/Config.module.css';
 
 const FONTS = ['Times New Roman','Georgia','Garamond','Arial','Verdana','Helvetica','Courier New','Lucida Console','Monaco','Brush Script Mj','Lucida Handwriting','Copperplate','Papyrus','Tangerine']
 
-export interface textConfig {
+export interface Config {
+  width: number,
+  height: number,
+  top: number,
+  left: number,
+  rotateAngleRad: number,
   text: string,
+  imageSrc: string,
   alignment: string,
   size: number,
   font: string,
@@ -17,16 +23,19 @@ export interface textConfig {
   editPath: boolean
 }
 
-export interface TextConfigProps extends textConfig{
+export interface ConfigProps extends Config{
   handleTextChange: any,
+  handleImageSourceChange: any
   handleAlignmentChange: any,
   handleColorChange: any,
-  handleTextSizeChange: any,
   handleFontChange: any,
+  handleDrag: any,
+  handleResize: any,
+  handleRotate: any,
   handleEditPathChange: any
 }
 
-export default function TextConfig(props: TextConfigProps) {
+export default function ConfigEditor(props: ConfigProps) {
 
   type Item = {
     value: number;
@@ -65,21 +74,6 @@ export default function TextConfig(props: TextConfigProps) {
             <ColorPicker label="Color" color={props.color} onChange={props.handleColorChange}/>
           </div>
 
-          <FormControl className={styles.formControl}>
-            <InputLabel id="text-size-select-label">Size</InputLabel>
-            <Select
-              labelId="text-size-select"
-              label="Size"
-              id="text-size-select"
-              value={props.size}
-              onChange={props.handleTextSizeChange} >
-              {
-                generateTextSizeItems([{value: 20,label:"Small"},
-                                    {value: 30,label:"Medium"},
-                                    {value: 40,label:"Large"},])
-              }
-            </Select>
-          </FormControl>
           <FormControl className={styles.formControl}>
             <InputLabel id="font-select-label">Font</InputLabel>
             <Select
